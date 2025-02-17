@@ -18,13 +18,3 @@ class UserBaseModel(BaseModel):
     
     def __eq__(self, value) -> bool:
         return self.username == value.username
-    
-    def to_dict(self) -> dict[str, str | int | bool]:
-        return {
-            "id": self.id,
-            "username": self.username,
-            "email": self.email,
-            "full_name": self.full_name,
-            "disabled": self.disabled,
-            "hashed_password": self.hashed_password
-        }
