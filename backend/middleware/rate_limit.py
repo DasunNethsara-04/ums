@@ -14,7 +14,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     async def log_message(self, message: str) -> None:
         print(message)
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(self, request: Request, call_next) -> Response | None:
         client_ip: str = request.client.host
         current_time: float = time.time()
         if current_time - self.rate_limit_records[client_ip] < 1:
