@@ -1,1 +1,2 @@
-from .database import Base, get_db
+from .database import get_db, Base
+from .seeder import DBSeeder
