@@ -18,11 +18,11 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:8000/api/auth/register",
+                "http://localhost:8000/api/auth/login",
                 formData,
                 { headers: { "Content-Type": "application/json" } }
             );
-            if (response.status === 201) {
+            if (response.status === 200) {
                 alert("User registered successfully");
                 window.location.href = "/login";
             } else {
