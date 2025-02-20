@@ -1,6 +1,6 @@
+from enum import Enum as PyEnum
 from sqlalchemy import Column, Integer, Sequence, Enum
 from database import Base
-from enum import Enum as PyEnum
 
 
 class RoleEnum(PyEnum):
