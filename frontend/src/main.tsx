@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 
 import App from './App.tsx'
+import Register from './assets/Pages/Auth/Register.tsx'
 
 
 const router = createBrowserRouter([
@@ -14,6 +15,14 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />
   },
+  {
+    path: '/login',
+    element: <App />
+  },
+  {
+    path: '/register',
+    element: <Register />
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
