@@ -1,6 +1,9 @@
 from enum import Enum as PyEnum
 from sqlalchemy import Column, Integer, Sequence, Enum
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.relationships import _RelationshipDeclared
 from database import Base
+from typing import Any
 
 
 class RoleEnum(PyEnum):
@@ -22,4 +25,4 @@ class Role(Base):
             "name": self.role
         }
     
-    # feed automatically some data when the table was created
+    users: _RelationshipDeclared[Any] = relationship("User", back_populates="role")
