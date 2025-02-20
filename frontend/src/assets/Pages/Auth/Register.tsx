@@ -22,19 +22,19 @@ const Register = () => {
                         <Form method='post' onSubmit={handleSubmit}>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type='text' name='name' required />
+                                <Form.Control type='text' name='name' placeholder="James Rods" required />
                             </Form.Group>
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className='mb-3'>
                                         <Form.Label>Username</Form.Label>
-                                        <Form.Control type='text' name='username' required />
+                                        <Form.Control type='text' name='username' placeholder="WarMachineRox" required />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className='mb-3'>
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type='email' name='email' required />
+                                        <Form.Control type='email' name='email' placeholder="warmachine@stak.net" required />
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -42,13 +42,13 @@ const Register = () => {
                                 <Col md={6}>
                                     <Form.Group className='mb-3'>
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" name="password" required />
+                                        <Form.Control type="password" name="password" placeholder="##########" required />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className='mb-3'>
                                         <Form.Label>Re-enter Password</Form.Label>
-                                        <Form.Control type="password" name="confirmPassword" required />
+                                        <Form.Control type="password" name="confirmPassword" placeholder="##########" required />
                                     </Form.Group>
                                 </Col>
                             </Row>

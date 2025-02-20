@@ -21,11 +21,11 @@ const Login = () => {
                         <Form method='post' onSubmit={handleSubmit}>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type='text' name='username' required />
+                                <Form.Control type='text' name='username' placeholder="WarMachineRox" required />
                             </Form.Group>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" name="password" required />
+                                <Form.Control type="password" name="password" placeholder="##########" required />
                             </Form.Group>
                             <Form.Group className='mb-3'>
                                 <div className="d-grid gap-2">
