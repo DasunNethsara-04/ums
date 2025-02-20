@@ -1,11 +1,11 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import PublicNavBar from "../../Components/Public/PublicNavBar";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const Register = () => {
-    
-    const validatePassword = (password: string, confirmPassword: string) => {
+
+    const validatePassword = (password: string, confirmPassword: string): boolean => {
         return password === confirmPassword;
     };
 
@@ -24,14 +24,14 @@ const Register = () => {
             return;
         }
 
-        const formData = new FormData();
+        const formData: FormData = new FormData();
         formData.append("name", name);
         formData.append("username", username);
         formData.append("email", email);
         formData.append("password", password);
 
         try {
-            const response = await axios.post(
+            const response: AxiosResponse = await axios.post(
                 "http://localhost:8000/api/auth/register",
                 formData,
                 { headers: { "Content-Type": "application/json" } }
