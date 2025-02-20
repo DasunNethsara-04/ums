@@ -1,7 +1,7 @@
 import { Button, Card, Form } from "react-bootstrap"
 import PublicNavBar from "../../Components/Public/PublicNavBar";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -12,12 +12,12 @@ const Login = () => {
         event.preventDefault();
 
         // TODO: implement the form submission
-        const formData = new FormData();
+        const formData: FormData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
 
         try {
-            const response = await axios.post(
+            const response: AxiosResponse = await axios.post(
                 "http://localhost:8000/api/auth/login",
                 formData,
                 { headers: { "Content-Type": "application/json" } }
