@@ -1,12 +1,37 @@
 import { Button, Card, Form } from "react-bootstrap"
 import PublicNavBar from "../../Components/Public/PublicNavBar";
+import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
     const handleSubmit = async (event: any) => {
         // Prevent the form from reloading the page
         event.preventDefault();
 
         // TODO: implement the form submission
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/api/auth/register",
+                formData,
+                { headers: { "Content-Type": "application/json" } }
+            );
+            if (response.status === 201) {
+                alert("User registered successfully");
+                window.location.href = "/login";
+            } else {
+                alert("User registration failed");
+                console.log(response)
+            }
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
@@ -21,11 +46,11 @@ const Login = () => {
                         <Form method='post' onSubmit={handleSubmit}>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type='text' name='username' placeholder="WarMachineRox" required />
+                                <Form.Control type='text' name='username' placeholder="WarMachineRox" onChange={(e) => setUsername(e.target.value)} required />
                             </Form.Group>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="##########" required />
+                                <Form.Control type="password" name="password" placeholder="##########" onChange={(e) => setPassword(e.target.value)} required />
                             </Form.Group>
                             <Form.Group className='mb-3'>
                                 <div className="d-grid gap-2">
