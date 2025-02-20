@@ -1,61 +1,133 @@
-import { Button, Card, Col, Form, Row } from "react-bootstrap"
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import PublicNavBar from "../../Components/Public/PublicNavBar";
+import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
+    
+    const validatePassword = (password: string, confirmPassword: string) => {
+        return password === confirmPassword;
+    };
+
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSubmit = async (event: any) => {
         // Prevent the form from reloading the page
         event.preventDefault();
 
-        // TODO: implement the form submission
-    }
+        if (!validatePassword(password, confirmPassword)) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("username", username);
+        formData.append("email", email);
+        formData.append("password", password);
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/api/auth/register",
+                formData,
+                { headers: { "Content-Type": "application/json" } }
+            );
+            if (response.status === 201) {
+                alert("User registered successfully");
+                window.location.href = "/login";
+            } else {
+                alert("User registration failed");
+                console.log(response)
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <>
             <PublicNavBar />
-            <div className='position-absolute top-50 start-50 translate-middle'>
+            <div className="position-absolute top-50 start-50 translate-middle">
                 <Card style={{ width: "50rem" }}>
                     <Card.Header>
-                        <Card.Title className="text-center" as="h1">Register</Card.Title>
+                        <Card.Title className="text-center" as="h1">
+                            Register
+                        </Card.Title>
                     </Card.Header>
                     <Card.Body>
-                        <Form method='post' onSubmit={handleSubmit}>
-                            <Form.Group className='mb-3'>
+                        <Form method="post" onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type='text' name='name' placeholder="James Rods" required />
+                                <Form.Control
+                                    type="text"
+                                    name="name"
+                                    placeholder="James Rods"
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
                             </Form.Group>
                             <Row>
                                 <Col md={6}>
-                                    <Form.Group className='mb-3'>
+                                    <Form.Group className="mb-3">
                                         <Form.Label>Username</Form.Label>
-                                        <Form.Control type='text' name='username' placeholder="WarMachineRox" required />
+                                        <Form.Control
+                                            type="text"
+                                            name="username"
+                                            placeholder="WarMachineRox"
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            required
+                                        />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
-                                    <Form.Group className='mb-3'>
+                                    <Form.Group className="mb-3">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type='email' name='email' placeholder="warmachine@stak.net" required />
+                                        <Form.Control
+                                            type="email"
+                                            name="email"
+                                            placeholder="warmachine@stak.net"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
                                     </Form.Group>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col md={6}>
-                                    <Form.Group className='mb-3'>
+                                    <Form.Group className="mb-3">
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" name="password" placeholder="##########" required />
+                                        <Form.Control
+                                            type="password"
+                                            name="password"
+                                            placeholder="##########"
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                        />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
-                                    <Form.Group className='mb-3'>
+                                    <Form.Group className="mb-3">
                                         <Form.Label>Re-enter Password</Form.Label>
-                                        <Form.Control type="password" name="confirmPassword" placeholder="##########" required />
+                                        <Form.Control
+                                            type="password"
+                                            name="confirmPassword"
+                                            placeholder="##########"
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            required
+                                        />
                                     </Form.Group>
                                 </Col>
                             </Row>
 
-                            <Form.Group className='mb-3'>
+                            <Form.Group className="mb-3">
                                 <div className="d-grid gap-2">
-                                    <Button type='submit' variant='outline-primary'>Register</Button>
+                                    <Button type="submit" variant="outline-primary">
+                                        Register
+                                    </Button>
                                 </div>
                             </Form.Group>
                         </Form>
@@ -63,7 +135,7 @@ const Register = () => {
                 </Card>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Register
+export default Register;
