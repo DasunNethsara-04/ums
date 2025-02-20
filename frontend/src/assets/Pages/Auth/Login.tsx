@@ -5,7 +5,10 @@ const Login = () => {
     const handleSubmit = async (event: any) => {
         // Prevent the form from reloading the page
         event.preventDefault();
+
+        // TODO: implement the form submission
     }
+
     return (
         <>
             <PublicNavBar />
@@ -33,7 +36,7 @@ const Login = () => {
                     </Card.Body>
                 </Card>
             </div>
-        </PublicNavBar >
+        </>
     )
 }
 
