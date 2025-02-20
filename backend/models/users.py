@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime, Boolean
 from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 
@@ -12,7 +12,7 @@ class User(Base):
     username = Column(String(50), unique=True, index=True)
     email = Column(String(50), unique=True, index=True)
     full_name = Column(String(50))
-    disabled = Column(Integer)
+    disabled = Column(Boolean(), default=0)
     hashed_password = Column(String(65), nullable=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
