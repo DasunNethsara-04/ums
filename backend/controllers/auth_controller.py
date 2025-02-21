@@ -18,7 +18,7 @@ class AuthController:
     def __init__(self) -> None:
         pass
 
-    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context: CryptContext):
+    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context):
         user: User | None = session.query(User).filter(username == User.username).first()
         if not user:
             return False
@@ -61,7 +61,7 @@ class AuthController:
         db_user: User = self.get_user_by_username(user.username, session)
         if db_user:
             raise HttpBadRequest(detail="Username already exists")
-        create_user: User = UserController().create_user(self, user, session, bcrypt_context)
+        create_user: User = UserController().create_user(user, session, bcrypt_context)
         token = self.create_access_token(id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
         return {"access_token":token, "token_type":"bearer"}
 
