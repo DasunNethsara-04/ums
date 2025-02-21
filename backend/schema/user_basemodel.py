@@ -3,14 +3,11 @@ from typing import Optional
 
 
 class UserBaseModel(BaseModel):
-    id: Optional[int] = None
-    role_id: Optional[int] = None
     username: str
+    role_id: Optional[int] | None = None
     email: str
     full_name: Optional[str] = None
-    disabled: Optional[bool] = None
     hashed_password: str | None = None
-    created_at: Optional[str] = None
 
     def __str__(self) -> str:
         return self.username
