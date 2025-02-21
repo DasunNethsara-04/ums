@@ -28,7 +28,7 @@ oauth2_bearer: OAuth2PasswordBearer = OAuth2PasswordBearer(tokenUrl='auth/token'
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
-async def register_user(user: UserBaseModel, db: db_dependency, bcrypt_context: CryptContext) -> User:
+async def register_user(user: UserBaseModel, db: db_dependency) -> dict[str, Any]:
     return auth_controller.register_user(user, bcrypt_context, db, ALGORITHM, KEY)
 
 
@@ -37,12 +37,12 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> dic
 
 
 @router.post("/token")
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency) -> dict[str, str]:
     return auth_controller.login(form_data, db, bcrypt_context, KEY, ALGORITHM)
 
 
 @router.get("/verify-token")
-async def verify_user_token(token: str):
+async def verify_user_token(token: str) -> dict[str, str]:
     if auth_controller.verify_token(token, KEY, ALGORITHM) is None:
         HttpForbidden(detail="Token is invalid or expired!")
     return {"detail": "Token is valid"}
