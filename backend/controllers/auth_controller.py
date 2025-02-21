@@ -1,14 +1,14 @@
-from schema import UserBaseModel, TokenBaseModel
+from fastapi import HTTPException
+from schema import UserBaseModel
 from datetime import datetime, timedelta
 from typing import Final, Any
 from database import Session
 from jose import jwt
 from models import User
 from passlib.context import CryptContext
-from exception import HttpBadRequest
+from exception import HttpBadRequest, HttpUnauthorized, HttpForbidden
 from controllers import UserController
 from jose.exceptions import JWTError
-from exception.unauthorized import HttpUnauthorized
 
 ACCESS_TOKEN_EXPIRE_MINUTES: Final[int] = 30
 
@@ -17,6 +17,25 @@ class AuthController:
 
     def __init__(self) -> None:
         pass
+
+    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context: CryptContext):
+        user: User | None = session.query(User).filter(username == User.username).first()
+        if not user:
+            return False
+        if not bcrypt_context.verify(password, user.hashed_password):
+            return False
+        return user
+
+    def verify_token(self, token: str, SECRET_KEY: str, ALGORITHM: str) -> dict[str, str] | HTTPException:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username: str = payload.get("sub")
+            if username is None:
+                raise HttpForbidden(detail="Could not validate credentials")
+            return payload
+
+        except JWTError:
+            raise HttpUnauthorized(detail="Invalid token")
 
     def get_current_logged_in_user(self, token: str, secret_key: str, algorithm: str) -> dict[str, Any]:
         try:
@@ -45,3 +64,11 @@ class AuthController:
         create_user: User = UserController().create_user(self, user, session, bcrypt_context)
         token = self.create_access_token(id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
         return {"access_token":token, "token_type":"bearer"}
+
+    def login(self, form_data: dict, session: Session, bcrypt_context: CryptContext, secret_key: str, algorithm: str):
+        user: User | None = self.authenticate_user(form_data.username, form_data.password, session, bcrypt_context)
+        if not user:
+            raise HttpUnauthorized(detail="Could not validate credentials")
+        token = self.create_access_token(user.id, user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
+        return {"access_token": token, "token_type": "bearer"}
+
