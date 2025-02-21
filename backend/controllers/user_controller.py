@@ -14,7 +14,8 @@ class UserController:
             username=user.username,
             email=user.email,
             full_name=user.full_name,
-            password=bcrypt_context.hash(user.hashed_password)
+            role_id=user.role_id,
+            hashed_password=bcrypt_context.hash(user.hashed_password)
         )
         session.add(create_user)
         session.commit()
