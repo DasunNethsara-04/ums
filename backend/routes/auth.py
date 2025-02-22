@@ -1,5 +1,4 @@
 from starlette import status
-from models.users import User
 from schema import UserBaseModel
 from typing import Final, Annotated, Any
 from database import get_db, Session
