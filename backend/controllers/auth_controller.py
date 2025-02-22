@@ -50,8 +50,8 @@ class AuthController:
     def get_user_by_username(self, username:str, session: Session) -> User | None:
         return session.query(User).filter(User.username == username).first()
 
-    def create_access_token(self, id: int | str, username: str, expires_delta: timedelta, algorithm: str, secret_key: str) -> str:
-        encode: dict[str, str] = {"sub":username, "id":id}
+    def create_access_token(self, user_id: int | str, username: str, expires_delta: timedelta, algorithm: str, secret_key: str) -> str:
+        encode: dict[str, str] = {"sub":username, "id":user_id}
         expires = datetime.utcnow() + expires_delta
         encode.update({"exp":expires})
         return jwt.encode(encode, secret_key, algorithm=algorithm)
@@ -61,7 +61,7 @@ class AuthController:
         if db_user:
             raise HttpBadRequest(detail="Username already exists")
         create_user: User = UserController().create_user(user, session, bcrypt_context)
-        token = self.create_access_token(id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
+        token = self.create_access_token(create_user.id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
         return {"access_token":token, "token_type":"bearer"}
 
     def login(self, form_data: dict, session: Session, bcrypt_context: CryptContext, secret_key: str, algorithm: str):
