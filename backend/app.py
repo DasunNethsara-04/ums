@@ -5,7 +5,6 @@ from models import User, Role
 from factory import RoleFactory
 from database import DBSeeder
 from routes import auth
-from middleware import RateLimitMiddleware
 
 # initialize the main FastAPI application
 app = FastAPI()
@@ -29,6 +28,12 @@ async def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
     db = next(get_db())
     DBSeeder(db).seed(RoleFactory().create())
+
+
+@app.on_event("shutdown")
+async def on_shutdown() -> None:
+    # delete all the tables
+    Base.metadata.drop_all(bind=engine)
 
 
 @app.get("/")
