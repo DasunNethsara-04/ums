@@ -3,12 +3,11 @@ from schema import UserBaseModel
 from datetime import datetime, timedelta
 from typing import Final, Any
 from database import Session
-from jose import jwt
+from jose import jwt, JWTError
 from models import User
 from passlib.context import CryptContext
 from exception import HttpBadRequest, HttpUnauthorized, HttpForbidden
 from controllers import UserController
-from jose.exceptions import JWTError
 
 ACCESS_TOKEN_EXPIRE_MINUTES: Final[int] = 30
 
@@ -18,7 +17,7 @@ class AuthController:
     def __init__(self) -> None:
         pass
 
-    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context):
+    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context: CryptContext):
         user: User | None = session.query(User).filter(username == User.username).first()
         if not user:
             return False
