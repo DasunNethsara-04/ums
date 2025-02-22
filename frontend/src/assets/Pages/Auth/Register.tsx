@@ -37,6 +37,7 @@ const Register = () => {
                 { headers: { "Content-Type": "application/json" } }
             );
             if (response.status === 201) {
+                localStorage.setItem("token", response.data.access_token);
                 alert("User registered successfully");
                 window.location.href = "/login";
             } else {
