@@ -1,3 +1,4 @@
+from typing import List
 from schema import UserBaseModel
 from models import User
 from sqlalchemy.orm import Session
