@@ -18,9 +18,9 @@ const Login = () => {
 
         try {
             const response: AxiosResponse = await axios.post(
-                "http://localhost:8000/api/auth/login",
+                "http://localhost:8000/auth/login",
                 formData,
-                { headers: { "Content-Type": "application/json" } }
+                { headers: { "Content-Type": "multipart/form-data" } }
             );
             if (response.status === 200) {
                 alert("User registered successfully");
