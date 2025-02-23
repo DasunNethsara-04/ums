@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from schema import UserBaseModel
+from schema import UserBaseModel, LoginBaseModel
 from datetime import datetime, timedelta
 from typing import Final, Any
 from database import Session
@@ -17,7 +17,7 @@ class AuthController:
     def __init__(self) -> None:
         pass
 
-    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context: CryptContext):
+    def authenticate_user(self, username: str, password: str, session: Session, bcrypt_context: CryptContext) -> User | bool:
         user: User | None = session.query(User).filter(username == User.username).first()
         if not user:
             return False
@@ -64,8 +64,8 @@ class AuthController:
         token = self.create_access_token(create_user.id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
         return {"access_token":token, "token_type":"bearer"}
 
-    def login(self, form_data: dict, session: Session, bcrypt_context: CryptContext, secret_key: str, algorithm: str):
-        user: User | None = self.authenticate_user(form_data.username, form_data.password, session, bcrypt_context)
+    def login(self, form_data: LoginBaseModel, session: Session, bcrypt_context: CryptContext, secret_key: str, algorithm: str):
+        user = self.authenticate_user(form_data.username, form_data.password, session, bcrypt_context)
         if not user:
             raise HttpUnauthorized(detail="Could not validate credentials")
         token = self.create_access_token(user.id, user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
