@@ -30,3 +30,6 @@ class UserController:
 
     def update_user(self, user: UserBaseModel, session: Session) -> User:
         pass
+
+    def delete_user(self, user_id: int | str, session: Session):
+        pass
