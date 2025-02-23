@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AuthChecker from "../../utils/AuthChecker";
+import PrivateNavBar from "../../Components/private/PrivateNavBar";
 
 const AdminDashboard = () => {
     const [role, setRole] = useState<string | null>(null);
@@ -18,7 +19,12 @@ const AdminDashboard = () => {
         fetchRole();
     }, []);
 
-    return <div>Admin Dashboard</div>;
+    return (
+        <>
+            <PrivateNavBar />
+            User Dashboard
+        </>
+    );
 };
 
 export default AdminDashboard;
