@@ -35,7 +35,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> dic
     return auth_controller.get_current_logged_in_user(token, KEY, ALGORITHM)
 
 
-@router.post("/token")
+@router.post("/login")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency) -> dict[str, str]:
     return auth_controller.login(form_data, db, bcrypt_context, KEY, ALGORITHM)
 
