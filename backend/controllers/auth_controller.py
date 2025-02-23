@@ -21,7 +21,7 @@ class AuthController:
         user: User | None = session.query(User).filter(username == User.username).first()
         if not user:
             return False
-        if not bcrypt_context.verify(password, user.hashed_password):
+        if not bcrypt_context.verify(password, user.password):
             return False
         return user
 
@@ -41,7 +41,8 @@ class AuthController:
             payload: dict[str, Any] = jwt.decode(token, secret_key, algorithms=[algorithm])
             username: str = payload.get("sub")
             user_id: int | str = payload.get("id")
-            if username is None or user_id is None:
+            role: str = payload.get("role")
+            if username is None or user_id is None or role is None:
                 raise HttpUnauthorized(detail="Could not validate credentials")
             return {"username":username, "id":user_id}
         except JWTError:
@@ -50,8 +51,8 @@ class AuthController:
     def get_user_by_username(self, username:str, session: Session) -> User | None:
         return session.query(User).filter(User.username == username).first()
 
-    def create_access_token(self, user_id: int | str, username: str, expires_delta: timedelta, algorithm: str, secret_key: str) -> str:
-        encode: dict[str, str] = {"sub":username, "id":user_id}
+    def create_access_token(self, user_id: int | str, username: str, role: str, expires_delta: timedelta, algorithm: str, secret_key: str) -> str:
+        encode: dict[str, str] = {"sub":username, "id":user_id, "role": role}
         expires = datetime.utcnow() + expires_delta
         encode.update({"exp":expires})
         return jwt.encode(encode, secret_key, algorithm=algorithm)
@@ -61,13 +62,13 @@ class AuthController:
         if db_user:
             raise HttpBadRequest(detail="Username already exists")
         create_user: User = UserController().create_user(user, session, bcrypt_context)
-        token = self.create_access_token(create_user.id, create_user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
-        return {"access_token":token, "token_type":"bearer"}
+        token = self.create_access_token(create_user.id, create_user.username, create_user.role, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
+        return {"access_token":token, "token_type":"bearer", "role":create_user.role}
 
     def login(self, form_data: LoginBaseModel, session: Session, bcrypt_context: CryptContext, secret_key: str, algorithm: str):
         user = self.authenticate_user(form_data.username, form_data.password, session, bcrypt_context)
         if not user:
             raise HttpUnauthorized(detail="Could not validate credentials")
-        token = self.create_access_token(user.id, user.username, timedelta(ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
-        return {"access_token": token, "token_type": "bearer"}
+        token = self.create_access_token(user.id, user.username, user.role, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
+        return {"access_token": token, "token_type": "bearer", "role": user.role}
 
