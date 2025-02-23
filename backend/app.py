@@ -1,9 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from database.database import Base, get_db, engine
-from models import User, Role
-from factory import RoleFactory
-from database import DBSeeder
+from models import User
 from routes import auth, user, admin
 
 # initialize the main FastAPI application
