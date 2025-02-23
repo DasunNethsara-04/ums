@@ -2,7 +2,7 @@ from starlette import status
 from schema import UserBaseModel
 from typing import Final, Annotated, Any
 from database import get_db, Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 from passlib.context import CryptContext
 from controllers import AuthController, UserController
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
@@ -45,3 +45,10 @@ async def verify_user_token(token: str) -> dict[str, str]:
     if auth_controller.verify_token(token, KEY, ALGORITHM) is None:
         HttpForbidden(detail="Token is invalid or expired!")
     return {"detail": "Token is valid"}
+
+
+@router.post("/role")
+async def get_user_role(token: Annotated[str, Depends(oauth2_bearer)]) -> dict[str, str]:
+    if token is None:
+        raise HttpForbidden(detail="Token is missing!")
+    return auth_controller.get_user_role(token, KEY, ALGORITHM)
