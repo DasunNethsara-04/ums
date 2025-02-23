@@ -7,8 +7,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 
 import App from './App.tsx'
-import Register from './assets/Pages/Auth/Register.tsx'
-
+import Register from './Pages/Auth/Register.tsx'
+import AdminDashboard from './Pages/Admin/Dashboard.tsx'
+import UserDashboard from './Pages/User/Dashboard.tsx'
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,15 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />
-  }
+  },
+  {
+    path: '/admin/dashboard',
+    element: <AdminDashboard />
+  },
+  {
+    path: '/user/dashboard',
+    element: <UserDashboard />,
+  },
 ]);
 
 createRoot(document.getElementById('root')!).render(
