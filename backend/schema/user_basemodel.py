@@ -6,7 +6,7 @@ class UserBaseModel(BaseModel):
     role: str
     email: str
     name: str
-    hashed_password: str | None = None
+    password: str
 
     def __str__(self) -> str:
         return self.username
