@@ -2,10 +2,14 @@ import { Button, Card, Form } from "react-bootstrap"
 import PublicNavBar from "../../Components/Public/PublicNavBar";
 import { useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("");
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: any) => {
         // Prevent the form from reloading the page
@@ -23,8 +27,15 @@ const Login = () => {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
             if (response.status === 200) {
-                alert("User registered successfully");
-                window.location.href = "/login";
+                setRole(response.data.role);
+                localStorage.setItem("token", response.data.access_token);
+
+                // check for the role of the user to navigate to the correct dashboard page
+                if (role == "admin") {
+                    navigate("/admin/dashboard");
+                } else if (role == "user") {
+                    navigate("/user/dashboard");
+                }
             } else {
                 alert("User registration failed");
                 console.log(response)

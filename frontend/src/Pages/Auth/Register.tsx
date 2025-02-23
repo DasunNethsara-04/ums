@@ -29,15 +29,15 @@ const Register = () => {
         formData.append("username", username);
         formData.append("email", email);
         formData.append("password", password);
+        formData.append("role", "user");
 
         try {
             const response: AxiosResponse = await axios.post(
-                "http://localhost:8000/api/auth/register",
+                "http://localhost:8000/auth/",
                 formData,
                 { headers: { "Content-Type": "application/json" } }
             );
             if (response.status === 201) {
-                localStorage.setItem("token", response.data.access_token);
                 alert("User registered successfully");
                 window.location.href = "/login";
             } else {
