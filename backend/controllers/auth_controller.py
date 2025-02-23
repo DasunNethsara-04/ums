@@ -72,3 +72,6 @@ class AuthController:
         token = self.create_access_token(user.id, user.username, user.role, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), algorithm, secret_key)
         return {"access_token": token, "token_type": "bearer", "role": user.role}
 
+    def get_user_role(self, token, KEY, ALGORITHM) -> dict:
+        payload = self.verify_token(token, KEY, ALGORITHM)
+        return {"role": payload.get("role")}
