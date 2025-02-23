@@ -10,9 +10,9 @@ class User(Base):
     role = Column(String(10), nullable=False)
     username = Column(String(50), unique=True, index=True)
     email = Column(String(50), unique=True, index=True)
-    full_name = Column(String(50))
+    name = Column(String(50))
     disabled = Column(Boolean(), default=0)
-    hashed_password = Column(String(65), nullable=False)
+    password = Column(String(65), nullable=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     def to_dict(self) -> dict[str, str | int | bool]:
@@ -21,7 +21,7 @@ class User(Base):
             "role": self.role,
             "username": self.username,
             "email": self.email,
-            "full_name": self.full_name,
+            "name": self.name,
             "disabled": self.disabled,
             "hashed_password": self.hashed_password
         }
