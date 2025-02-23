@@ -14,14 +14,13 @@ const AuthChecker = async (): Promise<string | false> => {
         );
 
         if (response.status === 200 && response.data.role) {
-            return response.data.role; // ✅ Return the role
+            return response.data.role;
         } else {
             throw new Error("Invalid response");
         }
     } catch (err: any) {
         console.error("AuthChecker error:", err);
 
-        // ❌ Only remove token if it's an authentication error (401)
         if (err.response?.status === 401) {
             console.log("Token expired or invalid");
             localStorage.removeItem("token");
