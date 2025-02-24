@@ -21,7 +21,7 @@ const AdminDashboard = () => {
 
     return (
         <>
-            <PrivateNavBar />
+            <PrivateNavBar role="user" />
             User Dashboard
         </>
     );
