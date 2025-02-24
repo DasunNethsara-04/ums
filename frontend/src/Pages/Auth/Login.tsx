@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("");
 
     const navigate = useNavigate();
 
@@ -27,20 +26,21 @@ const Login = () => {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
             if (response.status === 200) {
-                setRole(response.data.role);
+                const userRole = response.data.role;
                 localStorage.setItem("token", response.data.access_token);
 
                 // check for the role of the user to navigate to the correct dashboard page
-                if (role == "admin") {
+                if (userRole === "admin") {
                     navigate("/admin/dashboard");
-                } else if (role == "user") {
+                } else if (userRole === "user") {
                     navigate("/user/dashboard");
                 }
             } else {
-                alert("User registration failed");
-                console.log(response)
+                console.log(response.data);
+                alert(response.data['detail']);
             }
-        } catch (err) {
+        } catch (err: any) {
+            alert(err.response.data.detail);
             console.error(err);
         }
     }
