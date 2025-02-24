@@ -29,6 +29,10 @@ const PrivateNavBar = ({ role }: NavBarPropsInterface) => {
                     <NavDropdown.Item as={Link} to='/admin/users/add'>Add User</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to='/admin/users/show'>Show Users</NavDropdown.Item>
                   </NavDropdown>
+                  <NavDropdown title="Moderators" id="basic-nav-dropdown">
+                    <NavDropdown.Item as={Link} to='/admin/moderators/add'>Add Moderator</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to='/admin/moderators/show'>Show Moderators</NavDropdown.Item>
+                  </NavDropdown>
                   <Nav.Link as={Link} to="/admin/profile">Profile</Nav.Link>
                 </>
               ) : (
