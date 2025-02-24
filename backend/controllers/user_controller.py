@@ -11,6 +11,8 @@ class UserController:
         pass
 
     def create_user(self, user: UserBaseModel, session: Session, bcrypt_context: CryptContext) -> User:
+        if user.role != 'user':
+            raise Exception('Only user role is allowed to register!')
         create_user: User = User(
             username=user.username,
             email=user.email,
