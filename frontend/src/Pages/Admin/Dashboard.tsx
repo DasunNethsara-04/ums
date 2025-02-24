@@ -1,28 +1,56 @@
 import { useEffect, useState } from "react";
 import AuthChecker from "../../utils/AuthChecker";
 import PrivateNavBar from "../../Components/private/PrivateNavBar";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { fetchModerators, fetchUserCount, fetchUsers } from "../../utils/fetcher";
 
 const AdminDashboard = () => {
-    const [role, setRole] = useState<string | null>(null);
-
+    const [userCount, setUserCount] = useState<number>(0);
+    const [moderatorCount, setModeratorCount] = useState<number>(0);
     useEffect(() => {
         const fetchRole = async () => {
             const userRole = await AuthChecker();
 
             if (!userRole || userRole !== "admin") {
                 window.location.href = "/login";
-            } else {
-                setRole(userRole);
             }
         };
-
         fetchRole();
     }, []);
+
+    useEffect(() => {
+        fetchUserCount().then(count => setUserCount(count))
+        // fetchModerators();
+    })
 
     return (
         <>
             <PrivateNavBar role="admin" />
-            Admin Dashboard
+            <Container>
+                <h1>Dashboard</h1>
+                <Row className="mt-3">
+                    <Col md="6">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>{userCount}</Card.Title>
+                                <Card.Text>
+                                    Users
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col md="6">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>12</Card.Title>
+                                <Card.Text>
+                                    Moderators
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </>
     );
 };
