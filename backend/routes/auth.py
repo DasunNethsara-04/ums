@@ -2,7 +2,7 @@ from starlette import status
 from schema import UserBaseModel
 from typing import Final, Annotated, Any
 from database import get_db, Session
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from passlib.context import CryptContext
 from controllers import AuthController, UserController
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
