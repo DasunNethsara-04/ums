@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import AuthChecker from "../../utils/AuthChecker";
 import PrivateNavBar from "../../Components/private/PrivateNavBar";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { fetchModerators, fetchUserCount, fetchUsers } from "../../utils/fetcher";
+import { fetchUserCount } from "../../utils/fetcher";
 
 const AdminDashboard = () => {
     const [userCount, setUserCount] = useState<number>(0);
-    const [moderatorCount, setModeratorCount] = useState<number>(0);
+    // const [moderatorCount, setModeratorCount] = useState<number>(0);
     useEffect(() => {
         const fetchRole = async () => {
             const userRole = await AuthChecker();
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     return (
         <>
             <PrivateNavBar role="admin" />
-            <Container>
+            <Container className="mt-3">
                 <h1>Dashboard</h1>
                 <Row className="mt-3">
                     <Col md="6">
