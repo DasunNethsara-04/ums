@@ -12,3 +12,6 @@ class AdminController:
 
         users = session.query(User).all()
         return users
+    
+    def get_user_count(self, session: Session) -> int:
+        return session.query(User).count()
