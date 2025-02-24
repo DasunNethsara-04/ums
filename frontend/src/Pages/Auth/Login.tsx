@@ -3,6 +3,8 @@ import PublicNavBar from "../../Components/Public/PublicNavBar";
 import { useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -40,7 +42,19 @@ const Login = () => {
                 alert(response.data['detail']);
             }
         } catch (err: any) {
-            alert(err.response.data.detail);
+            toast(
+                err.response.data.detail,
+                {
+                    type: "error",
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                }
+            )
             console.error(err);
         }
     }
@@ -48,6 +62,7 @@ const Login = () => {
     return (
         <>
             <PublicNavBar />
+            <ToastContainer />
             <div className='position-absolute top-50 start-50 translate-middle'>
                 <Card style={{ width: "50rem" }}>
                     <Card.Header>
