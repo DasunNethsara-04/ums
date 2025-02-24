@@ -73,5 +73,7 @@ class AuthController:
         return {"access_token": token, "token_type": "bearer", "role": user.role}
 
     def get_user_role(self, token, KEY, ALGORITHM) -> dict:
+        if token is None:
+            raise HttpForbidden(detail="Token is missing!")
         payload = self.verify_token(token, KEY, ALGORITHM)
         return {"role": payload.get("role")}
