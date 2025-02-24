@@ -44,7 +44,7 @@ class AuthController:
             role: str = payload.get("role")
             if username is None or user_id is None or role is None:
                 raise HttpUnauthorized(detail="Could not validate credentials")
-            return {"username":username, "id":user_id}
+            return {"username":username, "id":user_id, "role":role}
         except JWTError:
             raise HttpUnauthorized(detail="Invalid token")
 
