@@ -32,6 +32,10 @@ const router = createBrowserRouter([
     path: '/user/dashboard',
     element: <UserDashboard />,
   },
+  {
+    path: '*',
+    element: <h1>Page not found</h1>,
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
