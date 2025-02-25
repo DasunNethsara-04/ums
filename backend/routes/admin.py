@@ -22,9 +22,9 @@ user_dep = Annotated[dict, Depends(auth.get_current_user)]
 
 
 @router.get("/users/")
-async def get_all_users(user: user_dep, session: db) -> dict[str, list[dict[str, str | int | bool]]]:
+async def get_all_users(user: user_dep, session: db) -> List[dict[str, str | int | bool]]:
     users = admin_controller.get_all_users(session)
-    return {"users": [user.to_dict() for user in users]}
+    return [user.to_dict() for user in users]
 
 
 # update a user
