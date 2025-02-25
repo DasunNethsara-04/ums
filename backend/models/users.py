@@ -23,5 +23,4 @@ class User(Base):
             "email": self.email,
             "name": self.name,
             "disabled": self.disabled,
-            "hashed_password": self.hashed_password
         }
