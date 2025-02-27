@@ -10,8 +10,11 @@ class AdminController:
 
     def get_all_users(self, session: Session) -> List[User]:
 
-        users = session.query(User).filter(User.role != 'admin').filter(User.disabled == 0).all()
+        users: List[User] = session.query(User).filter(User.role != 'admin').filter(User.disabled == 0).all()
         return users
     
     def get_user_count(self, session: Session) -> int:
-        return session.query(User).count()
+        return session.query(User).filter(User.role != 'admin').filter(User.disabled != 1).count()
+    
+    def get_user_by_id(self, session: Session, user_id: int) -> User:
+        return session.query(User).filter(User.id == user_id).first()
