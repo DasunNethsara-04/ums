@@ -17,7 +17,6 @@ const ShowUsers = () => {
     const handleEdit = async (id: number) => {
         console.log(id);
         fetchUserById(id).then(user => setEditUserData(user));
-        console.log(editUserData)
         handleShowEditModel();
     }
 
@@ -84,16 +83,16 @@ const ShowUsers = () => {
                             <Form.Group className='mb-3'>
                                 <Form.Label>Role</Form.Label>
                                 <Form.Select name='role'>
-                                    <option value='admin' selected={editUserData?.role === 'admin'}>Admin</option>
-                                    <option value='user' selected={editUserData?.role === 'user'}>User</option>
-                                    <option value='moderator' selected={editUserData?.role === 'moderator'}>Moderator</option>
+                                    <option value='admin' defaultChecked={editUserData?.role === 'admin'}>Admin</option>
+                                    <option value='user' defaultChecked={editUserData?.role === 'user'}>User</option>
+                                    <option value='moderator' defaultChecked={editUserData?.role === 'moderator'}>Moderator</option>
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Status</Form.Label>
                                 <Form.Select name='disabled'>
-                                    <option value="1" selected={editUserData?.disabled === true}>Disabled</option>
-                                    <option value="0" selected={editUserData?.disabled === false}>Active</option>
+                                    <option value="1" defaultChecked={editUserData?.disabled === true}>Disabled</option>
+                                    <option value="0" defaultChecked={editUserData?.disabled === false}>Active</option>
                                 </Form.Select>
                             </Form.Group>
 
