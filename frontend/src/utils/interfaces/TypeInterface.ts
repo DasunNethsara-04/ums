@@ -4,6 +4,7 @@ interface UserDataInterface {
     role: string,
     username: string,
     email: string,
+    disabled: boolean,
 }
 
 export default UserDataInterface;
