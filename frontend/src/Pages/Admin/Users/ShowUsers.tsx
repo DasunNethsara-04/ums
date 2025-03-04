@@ -9,6 +9,11 @@ const ShowUsers = () => {
     const [users, setUsers] = useState<UserDataInterface[]>([]);
     const [editUserData, setEditUserData] = useState<UserDataInterface | null>(null);
 
+    const [showDeleteBox, setDeleteBoxShow] = useState(false);
+
+    const handleDeleteBoxClose = () => setDeleteBoxShow(false);
+    const handleDeleteBoxShow = () => setDeleteBoxShow(true);
+
     // Updated user data
     const [editedName, setEditedName] = useState<string>('');
     const [editedEmail, setEditedEmail] = useState<string>('');
@@ -51,7 +56,8 @@ const ShowUsers = () => {
         setShowEditModel(false);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDeleteConfirm = (id: number) => {
+        handleDeleteBoxShow();
         console.log(id);
     };
 
@@ -81,7 +87,7 @@ const ShowUsers = () => {
                                         <Button variant="warning" size="sm" onClick={() => handleEdit(user.id)}>
                                             Edit
                                         </Button>
-                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDelete(user.id)}>
+                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(user.id)}>
                                             Delete
                                         </Button>
                                     </td>
