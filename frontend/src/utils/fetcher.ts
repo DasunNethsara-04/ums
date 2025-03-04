@@ -3,7 +3,7 @@ import UserDataInterface from "./interfaces/TypeInterface";
 
 const fetchUsers = async () => {
     try {
-        const response: AxiosResponse = await axios.get("http://localhost:8000/admin/users/",
+        const response: AxiosResponse<any, any> = await axios.get("http://localhost:8000/admin/users/",
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -27,7 +27,7 @@ const fetchModerators = async () => {
 
 const fetchUserCount = async (): Promise<number> => {
     try {
-        const response: AxiosResponse<{ count: number }> = await axios.get("http://localhost:8000/admin/users/count",
+        const response: AxiosResponse<{ count: number }, any> = await axios.get("http://localhost:8000/admin/users/count",
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -47,7 +47,7 @@ const fetchUserCount = async (): Promise<number> => {
 
 const fetchModeratorCount = async (): Promise<number> => {
     try {
-        const response: AxiosResponse<{ count: number }> = await axios.get("http://localhost:8000/admin/moderators/count",
+        const response: AxiosResponse<{ count: number }, any> = await axios.get("http://localhost:8000/admin/moderators/count",
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -67,7 +67,7 @@ const fetchModeratorCount = async (): Promise<number> => {
 
 const fetchUserById = async (id: number): Promise<UserDataInterface | null> => {
     try {
-        const response: AxiosResponse<UserDataInterface> = await axios.get(`http://localhost:8000/admin/users/${id}`, {
+        const response: AxiosResponse<UserDataInterface, any> = await axios.get(`http://localhost:8000/admin/users/${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
