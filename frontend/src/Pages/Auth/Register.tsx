@@ -29,7 +29,6 @@ const Register = () => {
         formData.append("username", username);
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("role", "user");
 
         try {
             const response: AxiosResponse = await axios.post(
