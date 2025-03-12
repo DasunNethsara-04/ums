@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated, List, Any
 from controllers import AdminController, UserController
+from exception.not_found import HttpNotFound
 from models import User
 from routes import auth
 from sqlalchemy.orm import Session
 from database import get_db
+from schema import UserBaseModel
 
 router: APIRouter = APIRouter(
     prefix='/admin',
@@ -28,14 +30,14 @@ async def get_all_users(user: user_dep, session: db) -> List[dict[str, str | int
 
 # update a user
 @router.put("/users/{user_id}")
-async def update_user(user: user_dep, user_id: int | str, data: dict[str, Any], db: db):
-    pass
+async def update_user(user: user_dep, user_id: int | str, data: UserBaseModel, db: db) -> dict[str, str | int | bool]:
+    return admin_controller.update_user(db, user_id, data)
 
 
 # delete a user
 @router.delete("/users/{user_id}")
-async def delete_user(user: user_dep, user_id: int | str, session: db):
-    return user_controller.delete_user(user_id, session)
+async def delete_user(user: user_dep, user_id: int | str, session: db) -> bool:
+    return admin_controller.delete_user(user_id, session)
 
 
 @router.get("/users/count")

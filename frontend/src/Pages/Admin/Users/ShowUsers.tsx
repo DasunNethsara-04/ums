@@ -134,6 +134,7 @@ const ShowUsers = () => {
                         progress: undefined
                     }
                 )
+                fetchUsers().then((users) => setUsers(users));
             }
         } catch (e) {
             console.log(e);
