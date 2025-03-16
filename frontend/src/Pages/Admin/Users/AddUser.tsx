@@ -3,7 +3,6 @@ import PrivateNavBar from '../../../Components/private/PrivateNavBar'
 import { Button, Card, Container, Form } from 'react-bootstrap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import axios, { AxiosResponse } from 'axios';
 
 const AddUser = () => {
