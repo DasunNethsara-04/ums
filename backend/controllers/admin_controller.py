@@ -1,17 +1,34 @@
-from typing import List
+from typing import List, Any
 from models import User
 from sqlalchemy.orm import Session
 from schema import UserBaseModel
 from exception import HttpNotFound
+from passlib.context import CryptContext
+from exception.internal_server_error import HttpInternalServerError
 
 
 class AdminController:
 
     def __init__(self) -> None:
+        self.bcrypt_context: CryptContext = CryptContext(schemes=['bcrypt'], deprecated='auto')
         pass
 
-    def get_all_users(self, session: Session) -> List[User]:
+    def create_user(self, form_data: UserBaseModel, session: Session) -> dict[str, Any]:
+        try:
+            create_user: User = User(
+            username=form_data.username,
+            email=form_data.email,
+            name=form_data.name,
+            role="user",
+            password=self.bcrypt_context.hash(form_data.password)
+        )
+            session.add(create_user)
+            session.commit()
+            return {"success": True, "message": "User created successfully!"}
+        except Exception as e:
+            raise HttpInternalServerError(f"{e}")
 
+    def get_all_users(self, session: Session) -> List[User]:
         users: List[User] = session.query(User).filter(User.role != 'admin').filter(User.disabled == 0).all()
         return users
     
