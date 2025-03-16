@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated, List, Any
 from controllers import AdminController, UserController
-from exception import HttpNotFound
 from models import User
 from routes import auth
 from sqlalchemy.orm import Session
