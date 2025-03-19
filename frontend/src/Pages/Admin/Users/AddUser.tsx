@@ -10,7 +10,7 @@ const AddUser = () => {
     const [username, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         const userData = {
             name: name,
