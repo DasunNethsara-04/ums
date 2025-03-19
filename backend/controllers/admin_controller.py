@@ -75,3 +75,7 @@ class AdminController:
             return {"message": "Moderator created successfully!"}
         except Exception as e:
             raise HttpInternalServerError(f"{e}")
+    
+    def get_moderators_count(self, session:Session) -> dict[str, int]:
+        count: int = session.query(User).filter(User.role == 'moderator').filter(User.disabled != 1).count()
+        return {'count': count}
