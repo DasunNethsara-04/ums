@@ -58,3 +58,8 @@ async def get_user_by_id(user: user_dep, user_id: int | str, session: db) -> dic
     if db_user:
         return db_user.to_dict()
     return {"detail": "User not found"}
+
+
+@router.post("/moderators/")
+async def create_new_moderator(user: user_dep, session: db, form_data: UserBaseModel) -> dict[str, str]:
+    return admin_controller.create_new_moderator(session, form_data)

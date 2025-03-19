@@ -60,3 +60,18 @@ class AdminController:
         session.delete(user)
         session.commit()
         return True
+
+    def create_new_moderator(self, session:Session, form_data: UserBaseModel) -> dict[str, str]:
+        try:
+            create_user: User = User(
+            username=form_data.username,
+            email=form_data.email,
+            name=form_data.name,
+            role="moderator",
+            password=self.bcrypt_context.hash(form_data.password)
+        )
+            session.add(create_user)
+            session.commit()
+            return {"message": "Moderator created successfully!"}
+        except Exception as e:
+            raise HttpInternalServerError(f"{e}")
