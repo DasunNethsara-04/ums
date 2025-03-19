@@ -3,10 +3,11 @@ from pydantic import BaseModel
 
 class UserBaseModel(BaseModel):
     username: str
-    role: str
+    role: str = "user"
     email: str
     name: str
-    password: str
+    password: str | None = None
+    disabled: bool = False
 
     def __str__(self) -> str:
         return self.username

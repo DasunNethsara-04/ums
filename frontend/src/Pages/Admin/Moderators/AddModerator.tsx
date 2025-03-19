@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import { Button, Card, Container, Form } from 'react-bootstrap';
 import PrivateNavBar from '../../../Components/private/PrivateNavBar'
-import { Button, Card, Container, Form } from 'react-bootstrap'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
-const AddUser = () => {
+const AddModerator = () => {
+
     const [name, setName] = useState<string>('');
     const [username, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -20,15 +21,14 @@ const AddUser = () => {
         }
 
         try {
-            const response: AxiosResponse = await axios.post("http://localhost:8000/admin/users", userData, {
+            const response: AxiosResponse = await axios.post("http://localhost:8000/admin/moderators", userData, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
             if (response.status === 200) {
                 toast(
-                    "User created successfully",
+                    "Moderator created successfully",
                     {
                         type: "success",
                         position: "top-right",
@@ -41,7 +41,7 @@ const AddUser = () => {
                     }
                 )
             }
-        } catch (e) {
+        } catch (error) {
             toast(
                 "Failed to update user data",
                 {
@@ -60,10 +60,10 @@ const AddUser = () => {
 
     return (
         <>
-            <PrivateNavBar role='admin' />
+            <PrivateNavBar role="admin" />
             <ToastContainer />
-            <Container className='mt-3'>
-                <h1>New User</h1>
+            <Container className="mt-3">
+                <h1>Add Moderator</h1>
                 <Card>
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
@@ -91,4 +91,4 @@ const AddUser = () => {
     )
 }
 
-export default AddUser
+export default AddModerator

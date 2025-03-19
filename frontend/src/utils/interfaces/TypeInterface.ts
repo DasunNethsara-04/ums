@@ -1,10 +1,10 @@
 interface UserDataInterface {
-    id: number,
+    id?: number,
     name: string,
-    role: string,
+    role?: string,
     username: string,
     email: string,
-    disabled: boolean,
+    disabled?: boolean,
 }
 
 export default UserDataInterface;

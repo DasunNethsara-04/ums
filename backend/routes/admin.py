@@ -5,6 +5,7 @@ from models import User
 from routes import auth
 from sqlalchemy.orm import Session
 from database import get_db
+from schema import UserBaseModel
 
 router: APIRouter = APIRouter(
     prefix='/admin',
@@ -26,18 +27,25 @@ async def get_all_users(user: user_dep, session: db) -> List[dict[str, str | int
     return [user.to_dict() for user in users]
 
 
+# create a new user
+@router.post("/users/")
+async def create_new_user(user: user_dep, form_data: UserBaseModel, db: db) -> dict[str, Any]:
+    return admin_controller.create_user(form_data, db)
+
+
 # update a user
 @router.put("/users/{user_id}")
-async def update_user(user: user_dep, user_id: int | str, data: dict[str, Any], db: db):
-    pass
+async def update_user(user: user_dep, user_id: int | str, data: UserBaseModel, db: db) -> dict[str, str | int | bool]:
+    return admin_controller.update_user(db, user_id, data)
 
 
 # delete a user
 @router.delete("/users/{user_id}")
-async def delete_user(user: user_dep, user_id: int | str, session: db):
-    return user_controller.delete_user(user_id, session)
+async def delete_user(user: user_dep, user_id: int | str, session: db) -> bool:
+    return admin_controller.delete_user(user_id, session)
 
 
+# get user count
 @router.get("/users/count")
 async def get_users_count(user: user_dep, session: db) -> dict[str, Any]:
     count = admin_controller.get_user_count(session)
@@ -50,3 +58,13 @@ async def get_user_by_id(user: user_dep, user_id: int | str, session: db) -> dic
     if db_user:
         return db_user.to_dict()
     return {"detail": "User not found"}
+
+
+@router.get("/moderators/count")
+async def get_moderators_count(user: user_dep, session: db) -> dict[str, int]:
+    return admin_controller.get_moderators_count(session)
+
+
+@router.post("/moderators/")
+async def create_new_moderator(user: user_dep, session: db, form_data: UserBaseModel) -> dict[str, str]:
+    return admin_controller.create_new_moderator(session, form_data)

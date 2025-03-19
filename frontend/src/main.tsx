@@ -12,6 +12,11 @@ import AdminDashboard from './Pages/Admin/Dashboard.tsx'
 import AddUser from './Pages/Admin/Users/AddUser.tsx'
 import ShowUsers from './Pages/Admin/Users/ShowUsers.tsx'
 import UserDashboard from './Pages/User/Dashboard.tsx'
+import AddModerator from './Pages/Admin/Moderators/AddModerator.tsx'
+import ShowModerators from './Pages/Admin/Moderators/ShowModerators.tsx'
+import ModeratorProfile from './Pages/Admin/Moderators/ModeratorProfile.tsx'
+import UserProfile from './Pages/Admin/Users/UserProfile.tsx'
+import AdminProfile from './Pages/Admin/AdminProfile.tsx'
 
 const router = createBrowserRouter([
   {
@@ -31,12 +36,32 @@ const router = createBrowserRouter([
     element: <AdminDashboard />
   },
   {
+    path: '/admin/profile',
+    element: <AdminProfile />
+  },
+  {
     path: '/admin/users/add',
     element: <AddUser />,
   },
   {
     path: '/admin/users/show',
     element: <ShowUsers />,
+  },
+  {
+    path: '/admin/users/profile',
+    element: <UserProfile />,
+  },
+  {
+    path: '/admin/moderators/add',
+    element: <AddModerator />,
+  },
+  {
+    path: '/admin/moderators/show',
+    element: <ShowModerators />
+  },
+  {
+    path: '/admin/moderators/profile',
+    element: <ModeratorProfile />,
   },
   {
     path: '/user/dashboard',

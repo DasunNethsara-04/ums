@@ -3,16 +3,14 @@ import PrivateNavBar from '../../../Components/private/PrivateNavBar'
 import { Button, Container, Form, Modal, Table } from 'react-bootstrap'
 import { fetchUserById, fetchUsers } from '../../../utils/fetcher';
 import UserDataInterface from '../../../utils/interfaces/TypeInterface';
+import axios, { AxiosResponse } from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ShowUsers = () => {
     const [showEditModel, setShowEditModel] = useState<boolean>(false);
     const [users, setUsers] = useState<UserDataInterface[]>([]);
     const [editUserData, setEditUserData] = useState<UserDataInterface | null>(null);
-
-    const [showDeleteBox, setDeleteBoxShow] = useState(false);
-
-    const handleDeleteBoxClose = () => setDeleteBoxShow(false);
-    const handleDeleteBoxShow = () => setDeleteBoxShow(true);
 
     // Updated user data
     const [editedName, setEditedName] = useState<string>('');
@@ -50,20 +48,103 @@ const ShowUsers = () => {
             username: editedUsername,
             role: editedRole,
             disabled: editedStatus,
-        };
+        }
 
-        console.log(updatedUserData);
+        try {
+            const response: AxiosResponse = await axios.put(`http://localhost:8000/admin/users/${id}`, updatedUserData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                },
+            );
+            if (response.status === 200) {
+                toast(
+                    "User data updated successfully",
+                    {
+                        type: "success",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                fetchUsers().then((users) => setUsers(users));
+            } else {
+                toast(
+                    "Failed to update user data",
+                    {
+                        type: "error",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                return;
+            }
+        } catch (e) {
+            console.log(e);
+            toast(
+                "Failed to update user data",
+                {
+                    type: "error",
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                }
+            )
+            return;
+        }
         setShowEditModel(false);
     };
 
-    const handleDeleteConfirm = (id: number) => {
-        handleDeleteBoxShow();
+    const handleDeleteConfirm = async (id: number) => {
         console.log(id);
+        try {
+            const response: AxiosResponse = await axios.delete(`http://localhost:8000/admin/users/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+            if (response.status === 200) {
+                toast(
+                    "User deleted successfully",
+                    {
+                        type: "success",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                fetchUsers().then((users) => setUsers(users));
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
         <>
             <PrivateNavBar role="admin" />
+            <ToastContainer />
             <Container className="mt-3">
                 <h1>Show Users</h1>
 
