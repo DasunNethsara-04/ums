@@ -60,6 +60,11 @@ async def get_user_by_id(user: user_dep, user_id: int | str, session: db) -> dic
     return {"detail": "User not found"}
 
 
+@router.get("/moderators/count")
+async def get_moderators_count(user: user_dep, session: db) -> dict[str, int]:
+    return admin_controller.get_moderators_count(session)
+
+
 @router.post("/moderators/")
 async def create_new_moderator(user: user_dep, session: db, form_data: UserBaseModel) -> dict[str, str]:
     return admin_controller.create_new_moderator(session, form_data)
