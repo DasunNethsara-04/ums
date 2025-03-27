@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, Sequence("user_id_seq"), primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     role = Column(String(10), nullable=False)
     username = Column(String(50), unique=True, index=True)
     email = Column(String(50), unique=True, index=True)
