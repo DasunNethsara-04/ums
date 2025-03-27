@@ -76,5 +76,13 @@ async def get_all_moderators(user: user_dep, session: db) -> List[dict[str, str 
 
 
 @router.get("/moderators/{moderator_id}")
-async def get_moderator_by_id(user: user_dep, moderator_id:int, session:db) -> dict:
+async def get_moderator_by_id(user: user_dep, moderator_id:int, session:db) -> dict[str, str | int | bool]:
     return admin_controller.get_moderator_by_id(session, moderator_id)
+
+@router.put("/moderators/{moderator_id}")
+async def update_moderator(user: user_dep, moderator_id:int, form_data: UserBaseModel, session:db) -> dict[str, str | int | bool]:
+    return admin_controller.update_user(session, moderator_id, form_data)
+
+@router.delete("/moderators/{moderator_id}")
+async def delete_moderator(user: user_dep, moderator_id:int, session:db) -> bool:
+    return admin_controller.delete_user(moderator_id, session)

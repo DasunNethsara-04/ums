@@ -5,17 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import { fetchModeratorById, fetchModerators } from '../../../utils/fetcher';
-
-const handleDeleteConfirm = async (id: number): Promise<any> => {
-    //
-}
-
-const handleUpdateUserData = async (e: React.FormEvent, id: number): Promise<any> => {
-    //
-}
+import axios, { AxiosResponse } from 'axios';
 
 const ShowModerators = () => {
-    const [users, setUsers] = useState<UserDataInterface[]>([]);
+    const [moderators, setModerators] = useState<UserDataInterface[]>([]);
     const [showEditModel, setShowEditModel] = useState<boolean>(false);
     const [editUserData, setEditUserData] = useState<UserDataInterface | null>(null);
 
@@ -27,19 +20,121 @@ const ShowModerators = () => {
     const [editedStatus, setEditedStatus] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchModerators().then((users) => setUsers(users));
+        fetchModerators().then((moderators) => setModerators(moderators));
     }, []);
 
     const handleEdit = async (id: number): Promise<any> => {
-        const user = await fetchModeratorById(id);
-        setEditUserData(user);
-        if (user) {
-            setEditedName(user.name || '');
-            setEditedEmail(user.email || '');
-            setEditedUsername(user.username || '');
-            setEditedRole(user.role || 'user');
-            setEditedStatus(user.disabled || false);
+        const moderators = await fetchModeratorById(id);
+        setEditUserData(moderators);
+        if (moderators) {
+            setEditedName(moderators.name || '');
+            setEditedEmail(moderators.email || '');
+            setEditedUsername(moderators.username || '');
+            setEditedRole(moderators.role || 'user');
+            setEditedStatus(moderators.disabled || false);
         }
+        setShowEditModel(true);
+    }
+
+    const handleDeleteConfirm = async (id: number): Promise<any> => {
+        console.log(id);
+        try {
+            const response: AxiosResponse = await axios.delete(`http://localhost:8000/admin/moderators/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+            if (response.status === 200) {
+                toast(
+                    "User deleted successfully",
+                    {
+                        type: "success",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                fetchModerators().then((moderator) => setModerators(moderator));
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const handleUpdateUserData = async (e: React.FormEvent, id: number): Promise<any> => {
+        e.preventDefault();
+        const updatedModeratorData: UserDataInterface = {
+            id,
+            name: editedName,
+            email: editedEmail,
+            username: editedUsername,
+            role: editedRole,
+            disabled: editedStatus,
+        }
+        try {
+            const response: AxiosResponse = await axios.put(`http://localhost:8000/admin/moderators/${id}`, updatedModeratorData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                },
+            );
+            if (response.status === 200) {
+                toast(
+                    "User data updated successfully",
+                    {
+                        type: "success",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                fetchModerators().then((users) => setModerators(users));
+            } else {
+                toast(
+                    "Failed to update user data",
+                    {
+                        type: "error",
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined
+                    }
+                )
+                return;
+            }
+        } catch (e) {
+            console.log(e);
+            toast(
+                "Failed to update user data",
+                {
+                    type: "error",
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                }
+            )
+            return;
+        }
+        setShowEditModel(false);
     }
 
     return (
@@ -59,16 +154,16 @@ const ShowModerators = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user: UserDataInterface) => (
-                                <tr key={user.id}>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</td>
+                            {moderators.map((moderators: UserDataInterface) => (
+                                <tr key={moderators.id}>
+                                    <td>{moderators.name}</td>
+                                    <td>{moderators.email}</td>
+                                    <td>{moderators.role.charAt(0).toUpperCase() + moderators.role.slice(1)}</td>
                                     <td>
-                                        <Button variant="warning" size="sm" onClick={() => handleEdit(user.id)}>
+                                        <Button variant="warning" size="sm" onClick={() => handleEdit(moderators.id)}>
                                             Edit
                                         </Button>
-                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(user.id)}>
+                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(moderators.id)}>
                                             Delete
                                         </Button>
                                     </td>
