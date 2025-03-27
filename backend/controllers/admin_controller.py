@@ -79,3 +79,15 @@ class AdminController:
     def get_moderators_count(self, session:Session) -> dict[str, int]:
         count: int = session.query(User).filter(User.role == 'moderator').filter(User.disabled != 1).count()
         return {'count': count}
+    
+    def get_all_moderators(self, session: Session) -> List[dict[str, str | int | bool]]:
+        moderators: List[User] = session.query(User).filter(User.role == 'moderator').filter(User.disabled != 1).all()
+        return [moderator.to_dict() for moderator in moderators]
+
+    def get_moderator_by_id(self, session: Session, moderator_id:int) -> dict:
+        if moderator_id is None:
+            raise HttpNotFound("Moderator Not Found!")
+        moderator = session.query(User).filter(User.id == moderator_id).first()
+        if moderator is None:
+            raise HttpNotFound("Moderator Not Found!")
+        return {"moderator":moderator}

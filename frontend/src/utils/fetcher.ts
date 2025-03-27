@@ -22,7 +22,21 @@ const fetchUsers = async () => {
 }
 
 const fetchModerators = async () => {
-    //
+    try {
+        const response: AxiosResponse<any, any> = await axios.get("http://localhost:8000/admin/moderators/", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+        if (response.status === 200 && response.data) {
+            return response.data;
+        } else {
+            throw new Error("Invalid Request");
+        }
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
 }
 
 const fetchUserCount = async (): Promise<number> => {
@@ -83,5 +97,25 @@ const fetchUserById = async (id: number): Promise<UserDataInterface | null> => {
     }
 }
 
+const fetchModeratorById = async (id: number): Promise<UserDataInterface | null> => {
+    // Fetch moderator by id
+    try {
+        const response: AxiosResponse<UserDataInterface, any> = await axios.get(`http://localhost:8000/admin/moderators/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        });
+        if (response.status === 200 && response.data) {
+            return response.data;
+        } else {
+            throw new Error("Invalid response");
+            console.log(response.data)
+        }
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 
-export { fetchUsers, fetchModerators, fetchUserCount, fetchModeratorCount, fetchUserById }
+
+export { fetchUsers, fetchModerators, fetchUserCount, fetchModeratorCount, fetchUserById, fetchModeratorById };

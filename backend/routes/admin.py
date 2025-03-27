@@ -68,3 +68,13 @@ async def get_moderators_count(user: user_dep, session: db) -> dict[str, int]:
 @router.post("/moderators/")
 async def create_new_moderator(user: user_dep, session: db, form_data: UserBaseModel) -> dict[str, str]:
     return admin_controller.create_new_moderator(session, form_data)
+
+
+@router.get("/moderators/")
+async def get_all_moderators(user: user_dep, session: db) -> List[dict[str, str | int | bool]]:
+    return admin_controller.get_all_moderators(session)
+
+
+@router.get("/moderators/{moderator_id}")
+async def get_moderator_by_id(user: user_dep, moderator_id:int, session:db) -> dict:
+    return admin_controller.get_moderator_by_id(session, moderator_id)
