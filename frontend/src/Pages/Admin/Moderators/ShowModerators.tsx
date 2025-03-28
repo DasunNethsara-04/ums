@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import { fetchModeratorById, fetchModerators } from '../../../utils/fetcher';
 import axios, { AxiosResponse } from 'axios';
+import { Link } from 'react-router-dom';
 
 const ShowModerators = () => {
     const [moderators, setModerators] = useState<UserDataInterface[]>([]);
@@ -154,16 +155,17 @@ const ShowModerators = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {moderators.map((moderators: UserDataInterface) => (
-                                <tr key={moderators.id}>
-                                    <td>{moderators.name}</td>
-                                    <td>{moderators.email}</td>
-                                    <td>{moderators.role.charAt(0).toUpperCase() + moderators.role.slice(1)}</td>
+                            {moderators.map((moderator: UserDataInterface) => (
+                                <tr key={moderator.id}>
+                                    <td>{moderator.name}</td>
+                                    <td>{moderator.email}</td>
+                                    <td>{moderator.role.charAt(0).toUpperCase() + moderator.role.slice(1)}</td>
                                     <td>
-                                        <Button variant="warning" size="sm" onClick={() => handleEdit(moderators.id)}>
+                                        <Button as={Link} to={"/admin/moderators/profile/" + moderator.id} size='sm'>Profile</Button>
+                                        <Button variant="warning" size="sm" className='ms-2' onClick={() => handleEdit(moderator.id)}>
                                             Edit
                                         </Button>
-                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(moderators.id)}>
+                                        <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(moderator.id)}>
                                             Delete
                                         </Button>
                                     </td>

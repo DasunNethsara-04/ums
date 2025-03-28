@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AuthChecker from "../../utils/AuthChecker";
 import PrivateNavBar from "../../Components/private/PrivateNavBar";
 
-const AdminDashboard = () => {
+const UserDashboard = () => {
 
     useEffect(() => {
         const fetchRole = async () => {
@@ -24,4 +24,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default UserDashboard;

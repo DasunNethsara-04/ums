@@ -36,6 +36,8 @@ const Login = () => {
                     navigate("/admin/dashboard");
                 } else if (userRole === "user") {
                     navigate("/user/dashboard");
+                } else if (userRole === "moderator") {
+                    navigate("/moderator/dashboard");
                 }
             } else {
                 console.log(response.data);

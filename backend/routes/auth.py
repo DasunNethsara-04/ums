@@ -1,4 +1,5 @@
 from starlette import status
+from models.users import User
 from schema import UserBaseModel
 from typing import Final, Annotated, Any
 from database import get_db, Session
@@ -52,3 +53,10 @@ async def get_user_role(token: Annotated[str, Depends(oauth2_bearer)]) -> dict[s
     if token is None:
         raise HttpForbidden(detail="Token is missing!")
     return auth_controller.get_user_role(token, KEY, ALGORITHM)
+
+
+@router.get("/profile")
+async def get_user_profile(token: Annotated[str, Depends(oauth2_bearer)], db: db_dependency, id:int=None) -> dict[str, Any]:
+    if token is None:
+        raise HttpForbidden(detail="Token is missing!")
+    return auth_controller.get_user_profile(token, KEY, ALGORITHM, db, id)

@@ -35,7 +35,7 @@ class AdminController:
     def get_user_count(self, session: Session) -> int:
         return session.query(User).filter(User.role != 'admin').filter(User.role != 'moderator').filter(User.disabled != 1).count()
     
-    def get_user_by_id(self, session: Session, user_id: int) -> User:
+    def get_user_by_id(self, session: Session, user_id: int) -> User | None:
         return session.query(User).filter(User.id == user_id).first()
 
     def update_user(self, session: Session, user_id: int, form_data: UserBaseModel) -> dict[str, str | int | bool]:
