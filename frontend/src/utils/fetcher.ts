@@ -79,7 +79,7 @@ const fetchModeratorCount = async (): Promise<number> => {
     }
 }
 
-const fetchUserById = async (id: number): Promise<UserDataInterface | null> => {
+const fetchUserById = async (id: string | number): Promise<UserDataInterface | null> => {
     try {
         const response: AxiosResponse<UserDataInterface, any> = await axios.get(`http://localhost:8000/admin/users/${id}`, {
             headers: {
@@ -97,7 +97,7 @@ const fetchUserById = async (id: number): Promise<UserDataInterface | null> => {
     }
 }
 
-const fetchModeratorById = async (id: number): Promise<UserDataInterface | null> => {
+const fetchModeratorById = async (id: string | number): Promise<UserDataInterface | null> => {
     // Fetch moderator by id
     try {
         const response: AxiosResponse<UserDataInterface, any> = await axios.get(`http://localhost:8000/admin/moderators/${id}`, {
@@ -109,7 +109,6 @@ const fetchModeratorById = async (id: number): Promise<UserDataInterface | null>
             return response.data;
         } else {
             throw new Error("Invalid response");
-            console.log(response.data)
         }
     } catch (err) {
         console.error(err);
