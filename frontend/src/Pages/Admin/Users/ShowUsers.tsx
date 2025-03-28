@@ -6,6 +6,7 @@ import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import axios, { AxiosResponse } from 'axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from 'react-router-dom';
 
 const ShowUsers = () => {
     const [showEditModel, setShowEditModel] = useState<boolean>(false);
@@ -165,7 +166,8 @@ const ShowUsers = () => {
                                     <td>{user.email}</td>
                                     <td>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</td>
                                     <td>
-                                        <Button variant="warning" size="sm" onClick={() => handleEdit(user.id)}>
+                                        <Button as={Link} to={"/admin/users/profile/" + user.id} size='sm'>Profile</Button>
+                                        <Button variant="warning" size="sm" className='ms-2' onClick={() => handleEdit(user.id)}>
                                             Edit
                                         </Button>
                                         <Button variant="danger" size="sm" className="ms-2" onClick={() => handleDeleteConfirm(user.id)}>
