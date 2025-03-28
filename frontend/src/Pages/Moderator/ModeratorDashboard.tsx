@@ -4,7 +4,7 @@ import AuthChecker from "../../utils/AuthChecker";
 
 const ModeratorDashboard = () => {
     useEffect(() => {
-        const fetchRole = async () => {
+        const fetchRole = async (): Promise<void> => {
             const userRole = await AuthChecker();
 
             if (!userRole || userRole !== "moderator") {
