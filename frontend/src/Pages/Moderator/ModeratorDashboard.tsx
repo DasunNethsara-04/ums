@@ -17,7 +17,7 @@ const ModeratorDashboard = () => {
 
     return (
         <>
-            <PrivateNavBar role="admin" />
+            <PrivateNavBar role="moderator" />
             Moderator Dashboard
         </>
     );
