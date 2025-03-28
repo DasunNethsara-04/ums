@@ -117,5 +117,24 @@ const fetchModeratorById = async (id: number): Promise<UserDataInterface | null>
     }
 }
 
+const fetchProfileData = async () => {
+    // fetch the profile data of the logged in user
+    try {
+        const response: AxiosResponse<UserDataInterface, any> = await axios.get("http://localhost:8000/auth/profile", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        if (response.status === 200 && response.data) {
+            return response.data;
+        } else {
+            throw new Error("Invalid response");
+        }
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 
-export { fetchUsers, fetchModerators, fetchUserCount, fetchModeratorCount, fetchUserById, fetchModeratorById };
+
+export { fetchUsers, fetchModerators, fetchUserCount, fetchModeratorCount, fetchUserById, fetchModeratorById, fetchProfileData };
