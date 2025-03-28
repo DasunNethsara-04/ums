@@ -16,7 +16,7 @@ const PrivateNavBar = ({ role }: NavBarPropsInterface) => {
       <Container>
         {
           role == 'admin' ? (
-            <Navbar.Brand as={Link} to="/admin/dashboard">UMS Admin</Navbar.Brand>) : (<Navbar.Brand as={Link} to="/user/dashboard">UMS User</Navbar.Brand>)
+            <Navbar.Brand as={Link} to="/admin/dashboard">UMS Admin</Navbar.Brand>) : (role == 'moderator' ? (<Navbar.Brand as={Link} to="/moderator/dashboard">UMS Moderator</Navbar.Brand>) : (<Navbar.Brand as={Link} to="/user/dashboard">UMS User</Navbar.Brand>))
         }
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -36,11 +36,21 @@ const PrivateNavBar = ({ role }: NavBarPropsInterface) => {
                   <Nav.Link as={Link} to="/admin/profile">Profile</Nav.Link>
                 </>
               ) : (
-                <>
-                  <Nav.Link as={Link} to="/user/dashboard">Dashboard</Nav.Link>
-                  <Nav.Link as={Link} to="/user/profile">Profile</Nav.Link>
-                </>
-              )
+                role == 'moderator' ? (
+                  <>
+                    <Nav.Link as={Link} to="/moderator/dashboard">Dashboard</Nav.Link>
+                    <NavDropdown title="Users" id="basic-nav-dropdown">
+                      <NavDropdown.Item as={Link} to='/moderator/users/add'>Add User</NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to='/moderator/users/show'>Show Users</NavDropdown.Item>
+                    </NavDropdown>
+                    <Nav.Link as={Link} to="/moderator/profile">Profile</Nav.Link>
+                  </>
+                ) : (
+                  <>
+                    <Nav.Link as={Link} to="/user/dashboard">Dashboard</Nav.Link>
+                    <Nav.Link as={Link} to="/user/profile">Profile</Nav.Link>
+                  </>
+                ))
             }
           </Nav>
           <a className='btn btn-sm btn-outline-danger' onClick={logout}>Logout</a>
