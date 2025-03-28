@@ -8,6 +8,7 @@ from models import User
 from passlib.context import CryptContext
 from exception import HttpBadRequest, HttpUnauthorized, HttpForbidden
 from controllers import UserController
+from controllers.admin_controller import AdminController
 
 ACCESS_TOKEN_EXPIRE_MINUTES: Final[int] = 30
 
@@ -77,3 +78,18 @@ class AuthController:
             raise HttpForbidden(detail="Token is missing!")
         payload = self.verify_token(token, KEY, ALGORITHM)
         return {"role": payload.get("role")}
+    
+    def get_user_profile(self, token, KEY, ALGORITHM, db: Session, id:int=None) -> dict[str, Any]:
+        if id is not None:
+            user: User = AdminController().get_user_by_id(db, id)
+            if user is None:
+                raise HttpBadRequest(detail="User not found")
+            return user.to_dict()
+        if token is None:
+            raise HttpForbidden(detail="Token is missing!")
+        logged_in_user: dict[str, Any] = self.get_current_logged_in_user(token, KEY, ALGORITHM)
+        user_id: int | None = logged_in_user.get("id")
+        user: User = AdminController().get_user_by_id(db, user_id)
+        if user is None:
+            raise HttpBadRequest(detail="User not found")
+        return user.to_dict()
