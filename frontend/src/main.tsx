@@ -80,7 +80,7 @@ const router = createBrowserRouter([
     element: <ModShowUsers />,
   },
   {
-    path: '/moderator',
+    path: '/moderator/users/profile/:userId',
     element: <ModUserProfile />
   },
   {
