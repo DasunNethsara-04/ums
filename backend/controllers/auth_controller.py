@@ -93,3 +93,31 @@ class AuthController:
         if user is None:
             raise HttpBadRequest(detail="User not found")
         return user.to_dict()
+    
+    def update_user_basic_details(self, user_id:int, form_data:dict[str, str], session: Session) -> dict[str, str | int | bool]:
+        db_user: User | None = AdminController().get_user_by_id(session, user_id)
+        if db_user is None:
+            raise HttpBadRequest(detail="User not found")
+        db_user.name = form_data.get("name")
+        db_user.email = form_data.get("email")
+        session.add(db_user)
+        session.commit()
+        return db_user.to_dict()
+
+    def update_user_username(self, user_id:int, form_data:dict[str, str], session: Session) -> dict[str, str | int | bool]:
+        db_user: User | None = AdminController().get_user_by_id(session, user_id)
+        if db_user is None:
+            raise HttpBadRequest(detail="User not found")
+        db_user.username = form_data.get("username")
+        session.add(db_user)
+        session.commit()
+        return db_user.to_dict()
+
+    def update_user_password(self, user_id:int, form_data:dict[str, str], session: Session, bcrypt_context: CryptContext) -> dict[str, str | int | bool]:
+        db_user: User | None = AdminController().get_user_by_id(session, user_id)
+        if db_user is None:
+            raise HttpBadRequest(detail="User not found")
+        db_user.password = bcrypt_context.hash(form_data.get("password"))
+        session.add(db_user)
+        session.commit()
+        return db_user.to_dict()
