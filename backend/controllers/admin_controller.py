@@ -38,8 +38,8 @@ class AdminController:
     def get_user_by_id(self, session: Session, user_id: int) -> User | None:
         return session.query(User).filter(User.id == user_id).first()
 
-    def update_user(self, session: Session, user_id: int, form_data: UserBaseModel) -> dict[str, str | int | bool]:
-        db_user: User = session.query(User).filter(User.id == user_id).first()
+    def update_user(self, session: Session, user_id: int | str, form_data: UserBaseModel) -> dict[str, str | int | bool]:
+        db_user: User | None = session.query(User).filter(User.id == user_id).first()
         if db_user is None:
             raise HttpNotFound("User Not Found!")
         db_user.id = user_id
@@ -54,7 +54,7 @@ class AdminController:
         return db_user.to_dict()
 
     def delete_user(self, user_id: int, session: Session) -> bool:
-        user: User = session.query(User).filter(User.id == user_id).first()
+        user: User | None = session.query(User).filter(User.id == user_id).first()
         if user is None:
             raise HttpNotFound("User Not Found!")
         session.delete(user)
@@ -93,7 +93,7 @@ class AdminController:
         return moderator.to_dict()
 
     def update_moderator(self, session: Session, moderator_id: int, form_data: UserBaseModel) -> dict[str, str | int | bool]:
-        db_user: User = session.query(User).filter(User.id == moderator_id).first()
+        db_user: User | None = session.query(User).filter(User.id == moderator_id).first()
         if db_user is None:
             raise HttpNotFound("Moderator Not Found!")
         db_user.id = moderator_id
@@ -109,7 +109,7 @@ class AdminController:
         return db_user.to_dict()
     
     def delete_moderator(self, moderator_id: int, session: Session) -> bool:
-        moderator: User = session.query(User).filter(User.id == moderator_id).first()
+        moderator: User | None = session.query(User).filter(User.id == moderator_id).first()
         if moderator is None:
             raise HttpNotFound("Moderator Not Found!")
         session.delete(moderator)
