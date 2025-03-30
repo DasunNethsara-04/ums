@@ -1,9 +1,10 @@
 import "react-toastify/dist/ReactToastify.css";
 import PrivateNavBar from "../../Components/private/PrivateNavBar";
-import { Card, Container, Form } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import UserDataInterface from "../../utils/interfaces/TypeInterface";
 import { fetchProfileData } from "../../utils/fetcher";
+import { Link } from "react-router-dom";
 
 const AdminProfile = () => {
     const [user, setUser] = useState<UserDataInterface | null>(null);
@@ -15,7 +16,14 @@ const AdminProfile = () => {
         <>
             <PrivateNavBar role="admin" />
             <Container className="mt-3">
-                <h1>Admin Profile</h1>
+                <Row>
+                    <Col>
+                        <h1>Admin Profile</h1>
+                    </Col>
+                    <Col xs lg="2" className="text-end">
+                        <Button as={Link} to="/admin/profile/edit" variant="outline-warning">Edit Profile</Button>
+                    </Col>
+                </Row>
                 <Card>
                     <Card.Body>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
