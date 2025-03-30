@@ -59,3 +59,35 @@ async def get_user_profile(token: Annotated[str, Depends(oauth2_bearer)], db: db
     if token is None:
         raise HttpForbidden(detail="Token is missing!")
     return auth_controller.get_user_profile(token, KEY, ALGORITHM, db, id)
+
+
+@router.patch("/profile/edit/{user_id}/basic")
+async def update_user_profile_basic_details(
+    token: Annotated[str, Depends(oauth2_bearer)], user_id: int, form_data: dict[str, str], db: db_dependency) -> dict[str, str | int | bool]:
+    if token is None:
+        raise HttpForbidden(detail="Token is missing!")
+    if user_id is None:
+        raise HttpForbidden(detail="User ID is missing")
+    return auth_controller.update_user_basic_details(user_id, form_data, db)
+
+
+@router.patch("/profile/edit/{user_id}/username")
+async def update_user_profile_username(
+    token: Annotated[str, Depends(oauth2_bearer)], user_id: int, form_data: dict[str, str], db: db_dependency) -> dict[str, str | int | bool]:
+    if token is None:
+        raise HttpForbidden(detail="Token is missing!")
+    if user_id is None:
+        raise HttpForbidden(detail="User ID is missing")
+    return auth_controller.update_user_username(user_id, form_data, db)
+
+
+@router.patch("/profile/edit/{user_id}/password")
+async def update_user_profile_email(token: Annotated[str, Depends(oauth2_bearer)], user_id: int, form_data: dict[str, str], db: db_dependency) -> dict[str, str | int | bool]:
+    if token is None:
+        raise HttpForbidden(detail="Token is missing!")
+    if user_id is None:
+        raise HttpForbidden(detail="User ID is missing")
+    if form_data.get("password") != form_data.get("confirm_password"):
+        raise HttpForbidden(detail="Password and Confirm Password do not match")
+    return auth_controller.update_user_password(user_id, form_data, db, bcrypt_context)
+
