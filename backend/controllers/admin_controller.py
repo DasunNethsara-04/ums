@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from schema import UserBaseModel
 from exception import HttpNotFound
 from passlib.context import CryptContext
-from exception.internal_server_error import HttpInternalServerError
+from exception import HttpInternalServerError
 
 
 class AdminController:
@@ -115,3 +115,4 @@ class AdminController:
         session.delete(moderator)
         session.commit()
         return True
+    
