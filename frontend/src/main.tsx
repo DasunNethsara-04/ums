@@ -21,6 +21,7 @@ import ModeratorDashboard from './Pages/Moderator/ModeratorDashboard.tsx'
 import ModAddUser from './Pages/Moderator/Users/ModAddUser.tsx'
 import ModShowUsers from './Pages/Moderator/Users/ModShowUsers.tsx'
 import ModUserProfile from './Pages/Moderator/Users/ModUserProfile.tsx'
+import EditAdminProfile from './Pages/Admin/Users/EditAdminProfile.tsx'
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/moderators/profile/:moderatorId',
     element: <ModeratorProfile />,
+  },
+  {
+    path: '/admin/profile/edit',
+    element: <EditAdminProfile />,
   },
   {
     path: '/moderator/dashboard',
