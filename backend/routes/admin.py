@@ -40,7 +40,7 @@ async def create_new_user(user: user_dep, form_data: UserBaseModel, db: db) -> d
 
 # update a user
 @router.put("/users/{user_id}")
-async def update_user(user: user_dep, user_id: int | str, data: UserBaseModel, db: db) -> dict[str, str | int | bool]:
+async def update_user(user: user_dep, user_id: int, data: UserBaseModel, db: db) -> dict[str, str | int | bool]:
     if user['role'] != 'admin' and user['role'] != 'moderator':
         raise HttpForbidden(detail="You are not authorized to access this resource")
     return admin_controller.update_user(db, user_id, data)
@@ -48,7 +48,7 @@ async def update_user(user: user_dep, user_id: int | str, data: UserBaseModel, d
 
 # delete a user
 @router.delete("/users/{user_id}")
-async def delete_user(user: user_dep, user_id: int | str, session: db) -> bool:
+async def delete_user(user: user_dep, user_id: int, session: db) -> bool:
     return admin_controller.delete_user(user_id, session)
 
 
@@ -62,10 +62,10 @@ async def get_users_count(user: user_dep, session: db) -> dict[str, Any]:
 
 
 @router.get("/users/{user_id}")
-async def get_user_by_id(user: user_dep, user_id: int | str, session: db) -> dict[str, str | int | bool] | dict[str, str]:
+async def get_user_by_id(user: user_dep, user_id: int, session: db) -> dict[str, str | int | bool] | dict[str, str]:
     if user['role'] != 'admin' and user['role'] != 'moderator':
         raise HttpForbidden(detail="You are not authorized to access this resource")
-    db_user: User = admin_controller.get_user_by_id(session, user_id)
+    db_user: User | None = admin_controller.get_user_by_id(session, user_id)
     if db_user:
         return db_user.to_dict()
     return {"detail": "User not found"}
