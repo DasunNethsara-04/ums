@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchProfileData } from "../../../utils/fetcher";
-import PrivateNavBar from "../../../Components/private/PrivateNavBar";
+import { fetchProfileData } from "../../utils/fetcher";
+import PrivateNavBar from "../../Components/private/PrivateNavBar";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
