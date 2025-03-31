@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchProfileData } from "../../../utils/fetcher";
-import PrivateNavBar from "../../../Components/private/PrivateNavBar";
+import { fetchProfileData } from "../../utils/fetcher";
+import PrivateNavBar from "../../Components/private/PrivateNavBar";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios, { AxiosResponse } from "axios";
 
-const EditAdminProfile = () => {
+const EditModeratorProfile = () => {
     const [id, setId] = useState<number | undefined>(undefined);
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -102,13 +102,12 @@ const EditAdminProfile = () => {
             toast.error("An error occurred while updating the password!");
         }
     }
-
     return (
         <>
-            <PrivateNavBar role="admin" />
+            <PrivateNavBar role="user" />
             <ToastContainer />
             <Container className="mt-3">
-                <h1>Edit Admin Profile</h1>
+                <h1>Edit Moderator Profile</h1>
                 <Card>
                     <Card.Header>Edit Basic Info</Card.Header>
                     <Card.Body>
@@ -170,4 +169,4 @@ const EditAdminProfile = () => {
     )
 }
 
-export default EditAdminProfile
+export default EditModeratorProfile
