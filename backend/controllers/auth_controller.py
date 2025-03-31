@@ -8,7 +8,7 @@ from models import User
 from passlib.context import CryptContext
 from exception import HttpBadRequest, HttpUnauthorized, HttpForbidden
 from controllers import UserController
-from controllers.admin_controller import AdminController
+from controllers import AdminController
 
 ACCESS_TOKEN_EXPIRE_MINUTES: Final[int] = 30
 
@@ -108,6 +108,8 @@ class AuthController:
         db_user: User | None = AdminController().get_user_by_id(session, user_id)
         if db_user is None:
             raise HttpBadRequest(detail="User not found")
+        if db_user.role == 'user':
+            raise HttpBadRequest(detail="Users cannot change their username")
         db_user.username = form_data.get("username")
         session.add(db_user)
         session.commit()
