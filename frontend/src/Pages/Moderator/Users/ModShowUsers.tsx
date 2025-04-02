@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from 'axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from 'react-router-dom';
+import AuthChecker from '../../../utils/AuthChecker';
 
 const ModShowUsers = () => {
     const [showEditModel, setShowEditModel] = useState<boolean>(false);
@@ -19,6 +20,18 @@ const ModShowUsers = () => {
     const [editedUsername, setEditedUsername] = useState<string>('');
     const [editedRole, setEditedRole] = useState<string>('user');
     const [editedStatus, setEditedStatus] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "moderator") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
 
     useEffect(() => {
         fetchUsers().then((users) => setUsers(users));

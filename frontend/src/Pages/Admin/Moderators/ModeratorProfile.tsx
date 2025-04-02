@@ -6,10 +6,24 @@ import "react-toastify/dist/ReactToastify.css";
 import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import { fetchModeratorById } from '../../../utils/fetcher';
 import { useParams } from 'react-router-dom';
+import AuthChecker from '../../../utils/AuthChecker';
 
 const ModeratorProfile = () => {
     const { moderatorId } = useParams();
     const [moderator, setModerator] = useState<UserDataInterface | null>(null);
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
+
     useEffect(() => {
         if (moderatorId) {
             fetchModeratorById(moderatorId).then(moderator => setModerator(moderator));

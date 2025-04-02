@@ -12,6 +12,7 @@ const AdminDashboard = () => {
             const userRole = await AuthChecker();
 
             if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
                 window.location.href = "/login";
             }
         };
