@@ -2,12 +2,25 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import PrivateNavBar from "../../../Components/private/PrivateNavBar"
 import { ToastContainer, toast } from "react-toastify";
 import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AuthChecker from "../../../utils/AuthChecker";
 
 const ModAddUser = () => {
     const [name, setName] = useState<string>('');
     const [username, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "moderator") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();

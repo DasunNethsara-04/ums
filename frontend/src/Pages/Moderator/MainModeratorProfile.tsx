@@ -4,9 +4,23 @@ import { Link } from "react-router-dom"
 import UserDataInterface from "../../utils/interfaces/TypeInterface";
 import { useEffect, useState } from "react";
 import { fetchProfileData } from "../../utils/fetcher";
+import AuthChecker from "../../utils/AuthChecker";
 
 const MainModeratorProfile = () => {
     const [moderator, setModerator] = useState<UserDataInterface | null>(null);
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "moderator") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
+
     useEffect(() => {
         fetchProfileData().then(moderator => setModerator(moderator));
     }, []);

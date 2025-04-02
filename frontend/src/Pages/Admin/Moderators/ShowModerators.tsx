@@ -7,6 +7,7 @@ import UserDataInterface from '../../../utils/interfaces/TypeInterface';
 import { fetchModeratorById, fetchModerators } from '../../../utils/fetcher';
 import axios, { AxiosResponse } from 'axios';
 import { Link } from 'react-router-dom';
+import AuthChecker from '../../../utils/AuthChecker';
 
 const ShowModerators = () => {
     const [moderators, setModerators] = useState<UserDataInterface[]>([]);
@@ -19,6 +20,18 @@ const ShowModerators = () => {
     const [editedUsername, setEditedUsername] = useState<string>('');
     const [editedRole, setEditedRole] = useState<string>('user');
     const [editedStatus, setEditedStatus] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
 
     useEffect(() => {
         fetchModerators().then((moderators) => setModerators(moderators));

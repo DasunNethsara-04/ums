@@ -6,10 +6,23 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserDataInterface from "../../../utils/interfaces/TypeInterface";
 import { fetchUserById } from "../../../utils/fetcher";
+import AuthChecker from "../../../utils/AuthChecker";
 
 const UserProfile = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<UserDataInterface | null>(null);
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
 
     useEffect(() => {
         if (userId) {

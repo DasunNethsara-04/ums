@@ -5,9 +5,21 @@ import { useEffect, useState } from "react";
 import UserDataInterface from "../../utils/interfaces/TypeInterface";
 import { fetchProfileData } from "../../utils/fetcher";
 import { Link } from "react-router-dom";
+import AuthChecker from "../../utils/AuthChecker";
 
 const AdminProfile = () => {
     const [user, setUser] = useState<UserDataInterface | null>(null);
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
     useEffect(() => {
         fetchProfileData().then(user => setUser(user));
     }, []);

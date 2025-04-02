@@ -5,6 +5,7 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios, { AxiosResponse } from "axios";
+import AuthChecker from "../../utils/AuthChecker";
 
 const EditAdminProfile = () => {
     const [id, setId] = useState<number | undefined>(undefined);
@@ -13,6 +14,18 @@ const EditAdminProfile = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const userRole = await AuthChecker();
+
+            if (!userRole || userRole !== "admin") {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        };
+        fetchRole();
+    }, []);
 
     useEffect(() => {
         fetchProfileData().then(user => {
