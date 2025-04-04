@@ -1,7 +1,7 @@
-import express from 'express';
+import express, { Express } from 'express';
 import rootRouter from './routes/index.mjs';
 
-const server = express();
+const server: Express = express();
 
 // middlewares
 server.use(express.json());

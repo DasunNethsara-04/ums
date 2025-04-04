@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 
-const userRouter = Router();
+const userRouter: Router = Router();
 
 // demo user router
 userRouter.get("/", (_: Request, res: Response): void => {
