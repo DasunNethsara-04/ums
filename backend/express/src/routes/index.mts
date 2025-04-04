@@ -7,7 +7,7 @@ const rootRouter = Router();
 rootRouter.use("/users", userRouter);
 
 // default endpoint (for testing)
-rootRouter.get("/", (_: Request, res: Response) => {
+rootRouter.get("/", (_: Request, res: Response): void => {
     res.status(200).json({ "message": "Hello World" });
 });
 
